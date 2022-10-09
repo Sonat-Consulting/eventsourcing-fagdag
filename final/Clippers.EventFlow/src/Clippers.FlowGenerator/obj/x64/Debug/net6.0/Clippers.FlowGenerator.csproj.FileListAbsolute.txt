@@ -1,0 +1,15 @@
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\bin\x64\Debug\net6.0\Clippers.FlowGenerator.deps.json
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\bin\x64\Debug\net6.0\Clippers.FlowGenerator.dll
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\bin\x64\Debug\net6.0\Clippers.FlowGenerator.pdb
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\bin\x64\Debug\net6.0\Clippers.Core.dll
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\bin\x64\Debug\net6.0\Clippers.Core.pdb
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.csproj.AssemblyReference.cache
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.AssemblyInfoInputs.cache
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.AssemblyInfo.cs
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.csproj.CoreCompileInputs.cache
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.csproj.CopyComplete
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.dll
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\refint\Clippers.FlowGenerator.dll
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\Clippers.FlowGenerator.pdb
+C:\GitHub\Sonat\eventsourcing-fagdag\final\Clippers.EventFlow\src\Clippers.FlowGenerator\obj\x64\Debug\net6.0\ref\Clippers.FlowGenerator.dll

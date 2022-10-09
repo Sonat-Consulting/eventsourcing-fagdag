@@ -1,0 +1,12 @@
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\bin\Debug\net6.0\Clippers.EventStore.deps.json
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\bin\Debug\net6.0\Clippers.EventStore.dll
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\bin\Debug\net6.0\Clippers.EventStore.pdb
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.csproj.AssemblyReference.cache
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.AssemblyInfoInputs.cache
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.AssemblyInfo.cs
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.csproj.CoreCompileInputs.cache
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.dll
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\refint\Clippers.EventStore.dll
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\Clippers.EventStore.pdb
+C:\GitHub\Sonat\Clippers.EventFlow\Clippers.EventStore\obj\Debug\net6.0\ref\Clippers.EventStore.dll
