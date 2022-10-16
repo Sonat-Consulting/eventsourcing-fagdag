@@ -14,14 +14,13 @@ namespace Clippers.Infrastructure.EventStore
         private readonly IMongoCollection<BsonDocument> _collection;
         private readonly ILogger _logger;
 
-        public OutboxEventStore(ICapPublisher capPublisher, IMongoClient mongoClient)
+        public OutboxEventStore(ICapPublisher capPublisher, IMongoClient mongoClient, ILogger<OutboxEventStore> logger)
         {
             _publisher = capPublisher;
             _client = mongoClient;
             var db = _client.GetDatabase("clippers");
             _collection = db.GetCollection<BsonDocument>("events");
-
-
+            _logger = logger;
         }
 
         public async Task<bool> AppendToStreamAsync(string streamId, int expectedVersion, IEnumerable<IEvent> events)
@@ -50,11 +49,8 @@ namespace Clippers.Infrastructure.EventStore
                 _logger.LogError("Failed to save and publish.", ex);
                 return false;
             }
-
             return true;
         }
-
-
 
         public async Task<IEventStream> LoadStreamAsync(string streamId)
         {
