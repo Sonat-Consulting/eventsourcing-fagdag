@@ -1,4 +1,5 @@
-﻿using Clippers.Core.Haircut.Events;
+﻿using Clippers.Core.EventStore;
+using Clippers.Core.Haircut.Events;
 using DotNetCore.CAP;
 
 namespace Clippers.Projections.OutboxProjection
@@ -23,14 +24,33 @@ namespace Clippers.Projections.OutboxProjection
         [CapSubscribe("HaircutCreated")]
         public async Task ReceiveHaircutCreated(HaircutCreated haircutCreated, CancellationToken cancellationToken)
         {
+            await ProcessProjection(haircutCreated, cancellationToken);           
+        }
+        [CapSubscribe("HaircutStarted")]
+        public async Task ReceiveHaircutStarted(HaircutStarted haircutStarted, CancellationToken cancellationToken)
+        {
+            await ProcessProjection(haircutStarted, cancellationToken);
+        }
+        [CapSubscribe("HaircutCompleted")]
+        public async Task ReceiveHaircutCompleted(HaircutCompleted haircutCompleted, CancellationToken cancellationToken)
+        {
+            await ProcessProjection(haircutCompleted, cancellationToken);
+        }
+        [CapSubscribe("HaircutCancelled")]
+        public async Task ReceiveHaircutCancelled(HaircutCancelled haircutCancelled, CancellationToken cancellationToken)
+        {
+            await ProcessProjection(haircutCancelled, cancellationToken);
+        }
+        public async Task ProcessProjection(IHaircutEventBase @event, CancellationToken cancellationToken)
+        {
             foreach (var projection in _projections)
             {
-                if (!projection.CanHandle(haircutCreated))
+                if (!projection.CanHandle(@event))
                 {
                     continue;
                 }
 
-                var viewName = projection.GetViewName($"haircut:{haircutCreated.HaircutId}", haircutCreated);
+                var viewName = projection.GetViewName($"haircut:{@event.HaircutId}", @event);
 
                 var handled = false;
                 while (!handled)
@@ -38,12 +58,12 @@ namespace Clippers.Projections.OutboxProjection
                     var view = await _viewRepository.LoadViewAsync(viewName);
                     dynamic checkpointInfo = new
                     {
-                        Id = haircutCreated.HaircutId,
-                        Timestamp = haircutCreated.Timestamp,
+                        Id = @event.HaircutId,
+                        Timestamp = @event.Timestamp,
                     };
                     if (view.IsNewerThanCheckpoint("0", checkpointInfo))
                     {
-                        projection.Apply(haircutCreated, view);
+                        projection.Apply(@event, view);
                         view.UpdateCheckpoint("0", checkpointInfo);
                         handled = await _viewRepository.SaveViewAsync(viewName, view);
                     }
