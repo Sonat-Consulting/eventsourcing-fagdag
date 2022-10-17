@@ -16,32 +16,31 @@ namespace Clippers.FlowGenerator
         private readonly Random random = new Random();
         private readonly int _minutesFromCreatedToStart = 2;
         private readonly int _minutesFromStartedToCompleted = 5;
-        private readonly int _numPerHour = 240;
+        private readonly int _numOfHaircuts = 20;
+        private readonly int _duration = 10;
         private string[] fornavnListe = new string[] { "Markus", "Lilly", "Emma", "Noa", "Markus", "Amanda", "Maja", "Vilde", "Nicolai", "Sarah", "Phillip", "Sophie", "Mathilde", "Anna", "Casper", "Astri", "Elias", "Johan", "Noah", "Axel", "Maria", "Johannes", "Iben", "Jonas", "Agnes", "Nora", "Sigrid", "Kasper", "Emma", "Adam", "Astri", "Anna", "Johann", "Viktoria", "Oskar", "Jakob", "Sophie", "Elias", "Kasper", "Theo", "Hanna", "Aleksander", "Oline", "Lea", "Oline", "Ida", "Hannah", "Sigrid", "Ellinor", "Aleksander", "Olav", "Sebastian", "Ellinor", "Kasper", "Astrid", "Bantam", "Haakon", "Jonas", "Liam", "Jacob", "Kaia", "Emma", "Tiril", "Victor", "Håkon", "Victoria", "Felix", "Amelia", "Sophia", "Liam", "Selma", "Herman", "Viktoria", "Johan", "Aegon", "Marie", "Emilie", "Henry", "Emil", "Mathilde", "Eline", "Noah", "Dany", "Matilde", "Amanda", "Ella", "Fredeico", "Mikkel", "Even", "Jonas", "Astri", "Mikaela", "Philip", "Jonas", "Jonna", "Sophie", "Lilly", "Oliver", "Alexander", "Agnes" };
         private static HttpClient client = new HttpClient();
         
         private Fixture fixture = new Fixture();
-        public Generator(int numPerHour = 240, int minutesFromCreatedToStart = 2, int minutesFromStartedToCompleted = 5)
+        public Generator(int numOfHaircuts = 20, int duration = 10, int minutesFromCreatedToStart = 2, int minutesFromStartedToCompleted = 5)
         {
             client.BaseAddress = new Uri("https://localhost:7255/");
-            _numPerHour = numPerHour;
+            _numOfHaircuts = numOfHaircuts;
             _minutesFromCreatedToStart = minutesFromCreatedToStart;
             _minutesFromStartedToCompleted = minutesFromStartedToCompleted;
         }
 
         public Task Generate()
         {
-            var now = DateTime.Now;
-            var start = new DateTime(now.Year, now.Month, now.Day, 10, 0, 0);
-            var end = new DateTime(now.Year, now.Month, now.Day, 11, 0, 0);
+           // var now = DateTime.Now;
+            //var start = new DateTime(now.Year, now.Month, now.Day, 10, 0, 0);
+            //var end = new DateTime(now.Year, now.Month, now.Day, 11, 0, 0);
 
-            var day = end - start;
+            var durationSpan = TimeSpan.FromMinutes(_duration);
 
-            var totalmilliseconds = (int)day.TotalMilliseconds;
+            var totalmilliseconds = (int)durationSpan.TotalMilliseconds;
 
-            var numOfHaircuts = (int)day.TotalHours * _numPerHour;
-
-            for (int i = 0; i < numOfHaircuts; i++)
+            for (int i = 0; i < _numOfHaircuts; i++)
             {
                 var haircutCreated = fixture.Create<HaircutCreated>();
                 haircutCreated.DisplayName = getRandomFornavn();
