@@ -10,21 +10,24 @@ namespace Clippers.Infrastructure.EventStore
     public class CdeEventStore : IEventStore
     {
         private readonly DocumentClient _client;
-        private readonly string _container;
-        private readonly string _database;
+        private readonly string _eventsContainerName = "events";
+        private readonly string _databaseName = "eventsdb";
+        private readonly string _viewsContainerName = "views";
+        private readonly string _leasesContainerName = "projectionleases";
+
 
         public CdeEventStore(string endpointUri, string authKey, string database,
             string container = "events")
         {
             _client = new DocumentClient(new Uri(endpointUri), authKey);
-            _database = database;
-            _container = container;
-            //CreateDbAndContainerIfNotExists();
+            _databaseName = database;
+            _eventsContainerName = container;
+            CreateDbAndContainersIfNotExists();
         }
 
         public async Task<IEventStream> LoadStreamAsync(string id)
         {
-            var uri = UriFactory.CreateDocumentCollectionUri(_database, _container);
+            var uri = UriFactory.CreateDocumentCollectionUri(_databaseName, _eventsContainerName);
 
             var queryable = _client.CreateDocumentQuery(uri, new SqlQuerySpec
             {
@@ -58,7 +61,7 @@ namespace Clippers.Infrastructure.EventStore
             var json = SerializeEvents(streamId, expectedVersion, events);
 
             // Call store procedure to bulk insert events (only if the expected version matches).
-            var uri = UriFactory.CreateStoredProcedureUri(_database, _container, "spAppendToStream");
+            var uri = UriFactory.CreateStoredProcedureUri(_databaseName, _eventsContainerName, "spAppendToStream");
             var options = new RequestOptions { PartitionKey = new PartitionKey(streamId) };
             var result = await _client.ExecuteStoredProcedureAsync<bool>(uri, options, streamId, expectedVersion, json);
 
@@ -91,11 +94,17 @@ namespace Clippers.Infrastructure.EventStore
             return JObject.FromObject(item.payload).ToObject(eventType);
         }
 
-        private void CreateDbAndContainerIfNotExists()
+        private void CreateDbAndContainersIfNotExists()
         {
-            _client.CreateDatabaseIfNotExistsAsync(new Database { Id = _database }).Wait();
-            _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_database),
-                new DocumentCollection { Id = _container },
+            _client.CreateDatabaseIfNotExistsAsync(new Database { Id = _databaseName }).Wait();
+            _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
+                new DocumentCollection { Id = _eventsContainerName },
+                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("stream/id") }).Wait();
+            _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
+                new DocumentCollection { Id = _viewsContainerName },
+                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("id") }).Wait();
+            _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
+                new DocumentCollection { Id = _leasesContainerName },
                 new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("id") }).Wait();
         }
     }
