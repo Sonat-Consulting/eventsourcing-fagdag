@@ -4,6 +4,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 
 namespace Clippers.Infrastructure.EventStore
 {
@@ -97,16 +98,22 @@ namespace Clippers.Infrastructure.EventStore
 
         private void CreateDbAndContainersIfNotExists()
         {
-            _client.CreateDatabaseIfNotExistsAsync(new Database { Id = _databaseName }).Wait();
+            var db = _client.CreateDatabaseIfNotExistsAsync(new Database { Id = _databaseName }).Result;
+
+            PartitionKeyDefinition pkDefnEvents = new PartitionKeyDefinition() { Paths = new Collection<string>() { "/stream/id" } };
             _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
-                new DocumentCollection { Id = _eventsContainerName },
-                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("stream/id") }).Wait();
+                new DocumentCollection { Id = _eventsContainerName, PartitionKey = pkDefnEvents },
+                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("/stream/id") }).Wait();
+
+            PartitionKeyDefinition pkDefnViews = new PartitionKeyDefinition() { Paths = new Collection<string>() { "/id" } };
             _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
-                new DocumentCollection { Id = _viewsContainerName },
-                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("id") }).Wait();
+                new DocumentCollection { Id = _viewsContainerName, PartitionKey = pkDefnViews },
+                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("/id") }).Wait();
+
+            PartitionKeyDefinition pkDefnLease = new PartitionKeyDefinition() { Paths = new Collection<string>() { "/id" } };
             _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
-                new DocumentCollection { Id = _leasesContainerName },
-                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("id") }).Wait();
+                new DocumentCollection { Id = _leasesContainerName, PartitionKey = pkDefnLease },
+                new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("/id") }).Wait();
         }
 
         private void CreateSpIfNotExists() 
