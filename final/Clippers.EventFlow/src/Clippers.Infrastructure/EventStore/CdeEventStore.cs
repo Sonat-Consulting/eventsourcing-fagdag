@@ -23,6 +23,7 @@ namespace Clippers.Infrastructure.EventStore
             _databaseName = database;
             _eventsContainerName = container;
             CreateDbAndContainersIfNotExists();
+            CreateSpIfNotExists();
         }
 
         public async Task<IEventStream> LoadStreamAsync(string id)
@@ -106,6 +107,27 @@ namespace Clippers.Infrastructure.EventStore
             _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
                 new DocumentCollection { Id = _leasesContainerName },
                 new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("id") }).Wait();
+        }
+
+        private void CreateSpIfNotExists() 
+        {
+            var spBody = File.ReadAllText(@"..\Clippers.Infrastructure\EventStore\StoredProcedures\spAppendToStream.js");
+
+            var spId = "spAppendToStream";
+            var spDefinition = new StoredProcedure
+            {
+                Id = $"{spId}",
+                Body = spBody
+            };
+            var spLink = UriFactory.CreateStoredProcedureUri(_databaseName, _eventsContainerName, spId);
+            try
+            {
+                _client.ReadStoredProcedureAsync(spLink).Wait();
+            }
+            catch (Exception)
+            {
+                _client.CreateStoredProcedureAsync(UriFactory.CreateDocumentCollectionUri(_databaseName, _eventsContainerName), spDefinition).Wait();
+            }
         }
     }
 }
