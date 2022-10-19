@@ -52,6 +52,13 @@ Jeg har laget koden med de verktøy jeg er mest vant med for tiden, så beklager
 - [Visual Studio 2022 Community](https://visualstudio.microsoft.com/vs/) (du kan kanskje klare deg med VS Code, men jeg har brukt VS Studio med sln filer, så antakelig blir det lettere for deg hvis "ikkje du e jækla go" og har stålkontroll)
 - [GitHub Repository](https://github.com/Sonat-Consulting/eventsourcing-fagdag)
 
+#### For å komme igang:
+
+1. Installer [Cosmos DB local emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21)
+2. Installer [.NET 6.0](https://dotnet.microsoft.com/en-us/download)
+3. Ta i bruk din favoritt IDE for C# prosjekter eller last ned [JetBrains Rider](https://www.jetbrains.com/rider/download)
+4. Åpne og kjør prosjektet ``\git\eventsourcing-fagdag\Clippers.FlowGenerator\Clippers.FlowGenerator.sln``
+
 ## Clippers
 Casen som er brukt i koden, er en fiktiv frisøkjede.
 
