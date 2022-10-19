@@ -20,4 +20,10 @@
     <ProjectReference Include="..\Clippers.Core\Clippers.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="EventStore\StoredProcedures\spAppendToStream.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
