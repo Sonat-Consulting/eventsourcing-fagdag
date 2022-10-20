@@ -1,7 +1,13 @@
+using Clippers.EventFlow.Projections.Api;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Documents;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel;
-
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +19,9 @@ builder.Services.AddLogging();
 
 builder.Services.AddSingleton(new CosmosClient("https://localhost:8081",
                     "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+builder.Services.AddScoped<IProjectionService, ProjectionService>();
+
+builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
 var app = builder.Build();
 
@@ -25,45 +34,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/projections", () =>
+app.MapGet("/projections", async ([FromServices]IProjectionService projectionService) =>
 {
-    var client = new CosmosClient("https://localhost:8081",
-                    "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
-    
-    var container = client.GetContainer("eventsdb", "views");
-
-    var sqlQueryText = "SELECT * FROM views";
-    QueryDefinition queryDefinition = new QueryDefinition(sqlQueryText);
-    //FeedIterator<Document> queryResultSetIterator = container.GetItemQueryIterator<Document>(queryDefinition);
-
-
-   
-
-
-});
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateTime.Now.AddDays(index),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var result = await projectionService.GetViews();
+    return result;
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Get Projections/Views", description: "Get all the projections/views as JSON."));
 
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
