@@ -3,9 +3,9 @@ using Clippers.Core.Haircut.Models;
 
 namespace Clippers.Core.Haircut.Services
 {
-    public interface IPurchaseHaircutService
+    public interface ICreateHaircutService
     {
         Task<HaircutModel> SaveHaircut(HaircutModel haircut);
-        Task<HaircutModel> CreateHaircut(HaircutCreated haircutPurchased);
+        Task<HaircutModel> CreateHaircut(CreateHaircutCommand createHaircutCommand);
     }
 }

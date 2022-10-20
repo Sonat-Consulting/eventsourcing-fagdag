@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Clippers.Core\Clippers.Core.csproj" />
-    <ProjectReference Include="..\Clippers.FlowGenerator\Clippers.FlowGenerator.csproj" />
     <ProjectReference Include="..\Clippers.Infrastructure\Clippers.Infrastructure.csproj" />
     <ProjectReference Include="..\Clippers.Projections\Clippers.Projections.csproj" />
   </ItemGroup>

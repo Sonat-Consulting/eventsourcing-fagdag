@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clippers.Test.Integration",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clippers.Projections", "Clippers.Projections\Clippers.Projections.csproj", "{0A446CEA-B4D3-4476-9B3B-8DC3F5B6159A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clippers.FlowGenerator", "Clippers.FlowGenerator\Clippers.FlowGenerator.csproj", "{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,14 +71,6 @@ Global
 		{0A446CEA-B4D3-4476-9B3B-8DC3F5B6159A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A446CEA-B4D3-4476-9B3B-8DC3F5B6159A}.Release|x64.ActiveCfg = Release|Any CPU
 		{0A446CEA-B4D3-4476-9B3B-8DC3F5B6159A}.Release|x64.Build.0 = Release|Any CPU
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Debug|x64.ActiveCfg = Debug|x64
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Debug|x64.Build.0 = Debug|x64
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Release|x64.ActiveCfg = Release|Any CPU
-		{DE9CBBBC-88FD-4B1B-A77F-A7584F6E8442}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,6 @@ namespace Clippers.Core.Haircut.Services
 {
     public interface ICancelHaircutService
     {
-        Task<HaircutModel> CancelHaircut(HaircutCancelled haircutCancelled);
+        Task<HaircutModel> CancelHaircut(CancelHaircutCommand cancelHaircutCommand);
     }
 }

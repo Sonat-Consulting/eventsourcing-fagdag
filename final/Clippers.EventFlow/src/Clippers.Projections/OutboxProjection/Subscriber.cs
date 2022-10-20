@@ -1,5 +1,4 @@
-﻿using Clippers.Core.EventStore;
-using Clippers.Core.Haircut.Events;
+﻿using Clippers.Core.Haircut.Events;
 using DotNetCore.CAP;
 
 namespace Clippers.Projections.OutboxProjection
@@ -24,7 +23,7 @@ namespace Clippers.Projections.OutboxProjection
         [CapSubscribe("HaircutCreated")]
         public async Task ReceiveHaircutCreated(HaircutCreated haircutCreated, CancellationToken cancellationToken)
         {
-            await ProcessProjection(haircutCreated, cancellationToken);           
+            await ProcessProjection(haircutCreated, cancellationToken);
         }
         [CapSubscribe("HaircutStarted")]
         public async Task ReceiveHaircutStarted(HaircutStarted haircutStarted, CancellationToken cancellationToken)

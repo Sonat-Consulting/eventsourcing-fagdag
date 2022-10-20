@@ -9,10 +9,10 @@ namespace Clippers.Core.Haircut.Services
         public CompleteHaircutService(IHaircutRepository haircutRepository) : base(haircutRepository)
         {
         }
-        public async Task<HaircutModel> CompleteHaircut(HaircutCompleted haircutCompleted)
+        public async Task<HaircutModel> CompleteHaircut(CompleteHaircutCommand completeHaircutCommand)
         {
-            var haircut = await LoadHaircut(haircutCompleted.HaircutId);
-            haircut.Complete(haircutCompleted.CompletedAt);
+            var haircut = await LoadHaircut(completeHaircutCommand.HaircutId);
+            haircut.Complete(completeHaircutCommand.CompletedAt);
             return await base.SaveHaircut(haircut);
         }
     }

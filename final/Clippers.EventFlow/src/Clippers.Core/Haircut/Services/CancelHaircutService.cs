@@ -9,10 +9,10 @@ namespace Clippers.Core.Haircut.Services
         public CancelHaircutService(IHaircutRepository haircutRepository) : base(haircutRepository)
         {
         }
-        public async Task<HaircutModel> CancelHaircut(HaircutCancelled haircutCancelled)
+        public async Task<HaircutModel> CancelHaircut(CancelHaircutCommand cancelHaircutCommand)
         {
-            var haircut = await LoadHaircut(haircutCancelled.HaircutId);
-            haircut.Complete(haircutCancelled.CancelledAt);
+            var haircut = await LoadHaircut(cancelHaircutCommand.HaircutId);
+            haircut.Complete(cancelHaircutCommand.CancelledAt);
             return await base.SaveHaircut(haircut);
         }
     }

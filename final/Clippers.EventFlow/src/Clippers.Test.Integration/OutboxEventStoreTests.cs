@@ -28,7 +28,7 @@ namespace Clippers.Test.Integration
                         }).Services
                 .AddSingleton<IEventStore, OutboxEventStore>()
                 .AddScoped<IHaircutRepository, HaircutRepository>()
-                .AddScoped<IPurchaseHaircutService, PurchaseHaircutService>()
+                .AddScoped<ICreateHaircutService, CreateHaircutService>()
                 .BuildServiceProvider();
         }
 
@@ -38,7 +38,7 @@ namespace Clippers.Test.Integration
             var eventstore = _serviceProvider.GetService<IEventStore>();
             var haircutId = Guid.NewGuid().ToString();
 
-            var haircutPurchased = new HaircutCreated
+            var haircutCreated = new HaircutCreated
             {
                 HaircutId = haircutId,
                 CustomerId = Guid.NewGuid().ToString(),
@@ -48,7 +48,7 @@ namespace Clippers.Test.Integration
 
             var events = new List<IEvent>
             {
-                haircutPurchased,
+                haircutCreated,
             };
 
             var streamId = $"haircut:{haircutId}";
@@ -57,7 +57,7 @@ namespace Clippers.Test.Integration
 
             var haircutStarted = new HaircutStarted
             {
-                HaircutId = haircutPurchased.HaircutId,
+                HaircutId = haircutCreated.HaircutId,
                 HairdresserId = Guid.NewGuid().ToString(),
                 StartedAt = DateTime.Now
             };
@@ -71,20 +71,19 @@ namespace Clippers.Test.Integration
         }
 
         [TestMethod]
-        public async Task PurchaseHaircutService_PurchaseHaircut_Ok()
+        public async Task CreateHaircutService_CreateHaircut_Ok()
         {
-            var sut = _serviceProvider.GetService<IPurchaseHaircutService>();
+            var sut = _serviceProvider.GetService<ICreateHaircutService>();
             var haircutId = Guid.NewGuid().ToString();
 
-            var haircutPurchased = new HaircutCreated
+            var createHaircutCommand = new CreateHaircutCommand
             {
-                HaircutId = haircutId,
                 CustomerId = Guid.NewGuid().ToString(),
                 DisplayName = "Jan Thomas",
                 CreatedAt = DateTime.Now
             };
 
-            var res = await sut.CreateHaircut(haircutPurchased);
+            var res = await sut.CreateHaircut(createHaircutCommand);
 
         }
     }

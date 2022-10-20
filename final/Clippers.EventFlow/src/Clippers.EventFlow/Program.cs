@@ -2,16 +2,12 @@ using Clippers.Core.EventStore;
 using Clippers.Core.Haircut.Events;
 using Clippers.Core.Haircut.Repository;
 using Clippers.Core.Haircut.Services;
-using Clippers.FlowGenerator;
 using Clippers.Infrastructure.EventStore;
 using Clippers.Infrastructure.Repositories;
-using Clippers.Projections;
 using Clippers.Projections.OutboxProjection;
 using Clippers.Projections.Projections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
-using MongoDB.Driver;
-using Savorboard.CAP.InMemoryMessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,12 +39,11 @@ builder.Services.AddSingleton<IEventStore>(
 //builder.Services.AddSingleton<IViewRepository, OutboxViewRepository>();
 //************** END Outbox Injection *****************************************
 
-builder.Services.AddScoped<IPurchaseHaircutService, PurchaseHaircutService>();
+builder.Services.AddScoped<ICreateHaircutService, CreateHaircutService>();
 builder.Services.AddScoped<IStartHaircutService, StartHaircutService>();
 builder.Services.AddScoped<ICompleteHaircutService, CompleteHaircutService>();
 builder.Services.AddScoped<ICancelHaircutService, CancelHaircutService>();
 builder.Services.AddScoped<IHaircutRepository, HaircutRepository>();
-builder.Services.AddSingleton<IGenerator, Generator>();
 
 
 var app = builder.Build();
@@ -68,27 +63,28 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/purchaseHaircut", async ([FromBody] HaircutCreated haircutPurchased, [FromServices] IPurchaseHaircutService purchaseHaircutService) =>
+app.MapPost("/createHaircut", async ([FromBody] CreateHaircutCommand createHaircutCommand, [FromServices] ICreateHaircutService createHaircutService) =>
 {
-    var ret = await purchaseHaircutService.CreateHaircut(haircutPurchased);
+    var ret = await createHaircutService.CreateHaircut(createHaircutCommand);
     return ret;
 });
 
-app.MapPost("/startHaircut", async ([FromBody] HaircutStarted haircutStarted, [FromServices] IStartHaircutService startHaircutService) =>
+app.MapPost("/startHaircut", async ([FromBody] StartHaircutCommand startHaircutCommand, [FromServices] IStartHaircutService startHaircutService) =>
 {
-    var ret = await startHaircutService.StartHaircut(haircutStarted);
+    var ret = await startHaircutService.StartHaircut(startHaircutCommand);
     return ret;
 });
 
-app.MapPost("/completeHaircut", async ([FromBody] HaircutCompleted haircutCompleted, [FromServices] ICompleteHaircutService completeHaircutService) =>
+app.MapPost("/completeHaircut", async ([FromBody] CompleteHaircutCommand completeHaircutCommand, [FromServices] ICompleteHaircutService completeHaircutService) =>
 {
-    var ret = await completeHaircutService.CompleteHaircut(haircutCompleted);
+    var ret = await completeHaircutService.CompleteHaircut(completeHaircutCommand);
     return ret;
 });
 
-app.MapPut("/generateflow", async ([FromServices] IGenerator generator) =>
+app.MapPost("/cancelHaircut", async ([FromBody] CancelHaircutCommand cancelHaircutCommand, [FromServices] ICancelHaircutService cancelHaircutService) =>
 {
-    await generator.Generate();
+    var ret = await cancelHaircutService.CancelHaircut(cancelHaircutCommand);
+    return ret;
 });
 
 app.Run();

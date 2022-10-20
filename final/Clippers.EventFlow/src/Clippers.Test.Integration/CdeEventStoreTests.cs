@@ -30,7 +30,7 @@ namespace Clippers.Test.Integration
                         "eventsdb")
                 )
                 .AddScoped<IHaircutRepository, HaircutRepository>()
-                .AddScoped<IPurchaseHaircutService, PurchaseHaircutService>()
+                .AddScoped<ICreateHaircutService, CreateHaircutService>()
                 .BuildServiceProvider();
         }
 
@@ -40,7 +40,7 @@ namespace Clippers.Test.Integration
             var eventstore = _serviceProvider.GetService<IEventStore>();
             var haircutId = Guid.NewGuid().ToString();
 
-            var haircutPurchased = new HaircutCreated
+            var haircutCreated = new HaircutCreated
             {
                 HaircutId = haircutId,
                 CustomerId = Guid.NewGuid().ToString(),
@@ -50,7 +50,7 @@ namespace Clippers.Test.Integration
 
             var events = new List<IEvent>
             {
-                haircutPurchased,
+                haircutCreated,
             };
 
             var streamId = $"haircut:{haircutId}";
@@ -59,7 +59,7 @@ namespace Clippers.Test.Integration
 
             var haircutStarted = new HaircutStarted
             {
-                HaircutId = haircutPurchased.HaircutId,
+                HaircutId = haircutCreated.HaircutId,
                 HairdresserId = Guid.NewGuid().ToString(),
                 StartedAt = DateTime.Now
             };
@@ -73,19 +73,19 @@ namespace Clippers.Test.Integration
         }
 
         [TestMethod]
-        public async Task PurchaseHaircutService_PurchaseHaircut_Ok()
+        public async Task CreateHaircutService_CreateHaircut_Ok()
         {
-            var sut = _serviceProvider.GetService<IPurchaseHaircutService>();
+            var sut = _serviceProvider.GetService<ICreateHaircutService>();
 
             var fixture = new Fixture();
-            var haircutPurchased = fixture.Create<HaircutCreated>();
+            var createHaircutCommand = fixture.Create<CreateHaircutCommand>();
 
-            var res = await sut.CreateHaircut(haircutPurchased);
+            var res = await sut.CreateHaircut(createHaircutCommand);
 
-            res.CreatedAt.Should().Be(haircutPurchased.CreatedAt);
-            res.HaircutId.Should().Be(haircutPurchased.HaircutId);
-            res.CustomerId.Should().Be(haircutPurchased?.CustomerId);
-            res.DisplayName.Should().Be(haircutPurchased?.DisplayName);
+            res.HaircutId.Should().NotBeNullOrEmpty();
+            res.CreatedAt.Should().Be(createHaircutCommand.CreatedAt);
+            res.CustomerId.Should().Be(createHaircutCommand?.CustomerId);
+            res.DisplayName.Should().Be(createHaircutCommand?.DisplayName);
             res.HaircutStatus.Should().Be(HaircutStatusType.waiting);
             res.Version.Should().Be(1);
             res.Changes.Count.Should().Be(0);

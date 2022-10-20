@@ -5,6 +5,6 @@ namespace Clippers.Core.Haircut.Services
 {
     public interface IStartHaircutService
     {
-        Task<HaircutModel> StartHaircut(HaircutStarted haircutStarted);
+        Task<HaircutModel> StartHaircut(StartHaircutCommand startHaircutCommand);
     }
 }

@@ -116,7 +116,7 @@ namespace Clippers.Infrastructure.EventStore
                 new RequestOptions { OfferThroughput = 400, PartitionKey = new PartitionKey("/id") }).Wait();
         }
 
-        private void CreateSpIfNotExists() 
+        private void CreateSpIfNotExists()
         {
             var spBody = File.ReadAllText(@"..\Clippers.Infrastructure\EventStore\StoredProcedures\spAppendToStream.js");
 
