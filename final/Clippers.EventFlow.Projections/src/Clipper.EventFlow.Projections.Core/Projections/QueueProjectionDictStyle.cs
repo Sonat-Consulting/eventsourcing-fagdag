@@ -1,9 +1,4 @@
 ﻿using Clippers.EventFlow.Projections.Core.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Clippers.EventFlow.Projections.Core.Projections
 {
@@ -17,8 +12,8 @@ namespace Clippers.EventFlow.Projections.Core.Projections
     {
         public int WaitingCount { get; set; }
         public int ServingCount { get; set; }
-        public Dictionary<string,QueueDictStyleElement> Customers { get; set; } = new Dictionary<string,QueueDictStyleElement>();
-        
+        public Dictionary<string, QueueDictStyleElement> Customers { get; set; } = new Dictionary<string, QueueDictStyleElement>();
+
     }
     public class QueueDictStyleProjection : Projection<QueueDictStyleView>
     {

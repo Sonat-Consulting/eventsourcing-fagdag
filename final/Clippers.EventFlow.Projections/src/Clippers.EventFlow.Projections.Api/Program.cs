@@ -1,13 +1,7 @@
 using Clippers.EventFlow.Projections.Api;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Documents;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/projections", async ([FromServices]IProjectionService projectionService) =>
+app.MapGet("/projections", async ([FromServices] IProjectionService projectionService) =>
 {
     var result = await projectionService.GetViews();
     return result;

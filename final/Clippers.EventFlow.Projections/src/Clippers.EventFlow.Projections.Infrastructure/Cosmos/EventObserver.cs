@@ -31,7 +31,7 @@ namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
             foreach (var document in documents)
             {
                 var @event = DeserializeEvent(document);
-                if(@event is null)
+                if (@event is null)
                 {
                     continue;
                 }

@@ -1,9 +1,4 @@
 ﻿using Clippers.EventFlow.Projections.Core.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Clippers.EventFlow.Projections.Core.Projections
 {
@@ -35,7 +30,7 @@ namespace Clippers.EventFlow.Projections.Core.Projections
                 DisplayName = haircutCreated.DisplayName,
                 Status = "waiting",
             });
-            
+
         }
 
         private void WhenHaircutStarted(HaircutStarted haircutStarted, QueueView view)
