@@ -8,6 +8,7 @@ using Clippers.Projections.OutboxProjection;
 using Clippers.Projections.Projections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
+using Swashbuckle.AspNetCore.Annotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddScoped<ICompleteHaircutService, CompleteHaircutService>();
 builder.Services.AddScoped<ICancelHaircutService, CancelHaircutService>();
 builder.Services.AddScoped<IHaircutRepository, HaircutRepository>();
 
+builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
 var app = builder.Build();
 
@@ -67,24 +69,24 @@ app.MapPost("/createHaircut", async ([FromBody] CreateHaircutCommand createHairc
 {
     var ret = await createHaircutService.CreateHaircut(createHaircutCommand);
     return ret;
-});
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Create a haircut in the EventStore.", description: "Creates the haircut. Returns the Haircut with its new HaircutId, in status waiting."));
 
 app.MapPost("/startHaircut", async ([FromBody] StartHaircutCommand startHaircutCommand, [FromServices] IStartHaircutService startHaircutService) =>
 {
     var ret = await startHaircutService.StartHaircut(startHaircutCommand);
     return ret;
-});
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Starts a haircut in the EventStore.", description: "Starts the haircut identified by the HaircutId provided. You can only start a haircut when it is in the waiting status. "));
 
 app.MapPost("/completeHaircut", async ([FromBody] CompleteHaircutCommand completeHaircutCommand, [FromServices] ICompleteHaircutService completeHaircutService) =>
 {
     var ret = await completeHaircutService.CompleteHaircut(completeHaircutCommand);
     return ret;
-});
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Completes a haircut in the EventStore.", description: "Completes the haircut identified by the HaircutId provided.  You can only complete a haircut when it is in the serving status."));
 
 app.MapPost("/cancelHaircut", async ([FromBody] CancelHaircutCommand cancelHaircutCommand, [FromServices] ICancelHaircutService cancelHaircutService) =>
 {
     var ret = await cancelHaircutService.CancelHaircut(cancelHaircutCommand);
     return ret;
-});
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Cancel a haircut in the EventStore.", description: "Cancel the haircut identified by the HaircutId provided.  You can only cancel a haircut in the waiting status."));
 
 app.Run();
