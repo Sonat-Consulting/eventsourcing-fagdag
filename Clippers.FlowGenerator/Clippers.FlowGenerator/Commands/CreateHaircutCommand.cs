@@ -1,6 +1,6 @@
-﻿namespace Clippers.FlowGenerator.Events
+﻿namespace Clippers.FlowGenerator.Commands
 {
-    public class HaircutCreated : HaircutEventBase
+    public class CreateHaircutCommand
     {
         public DateTime CreatedAt { get; set; }
         public string CustomerId { get; set; }

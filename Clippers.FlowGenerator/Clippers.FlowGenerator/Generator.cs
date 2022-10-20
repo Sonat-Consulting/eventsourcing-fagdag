@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Clippers.FlowGenerator.Events;
+using Clippers.FlowGenerator.Commands;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Reflection.Emit;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Clippers.FlowGenerator
@@ -42,11 +43,15 @@ namespace Clippers.FlowGenerator
 
             for (int i = 0; i < _numOfHaircuts; i++)
             {
-                var haircutCreated = fixture.Create<HaircutCreated>();
-                haircutCreated.DisplayName = getRandomFornavn();
-                haircutCreated.CreatedAt = DateTime.UtcNow;
+                var createHaircutCommand = fixture.Create<CreateHaircutCommand>();
+                createHaircutCommand.DisplayName = getRandomFornavn();
+                createHaircutCommand.CreatedAt = DateTime.UtcNow;
                 var randomMilliSeconds = random.Next(totalmilliseconds);
-                haircutCreated.HaircutId.DelayedExecute(randomMilliSeconds, async (Object source, System.Timers.ElapsedEventArgs e, object input) => await OnTimedEvent(source, e, haircutCreated as Object));
+                if (i == 0)
+                {
+                    randomMilliSeconds = 1000;
+                }
+                i.DelayedExecute(randomMilliSeconds, async (Object source, System.Timers.ElapsedEventArgs e, object input) => await OnTimedEvent(source, e, createHaircutCommand as Object));
             }
 
             return Task.CompletedTask;
@@ -60,19 +65,20 @@ namespace Clippers.FlowGenerator
         private async Task OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, object data)
         {
             var dyn = (dynamic)data;
-            string operation = "/purchaseHaircut";
+            string operation = "/createHaircut";
             if (DoesPropertyExist(dyn, "CreatedAt"))
             {
-                operation = "/purchaseHaircut";
+                operation = "/createHaircut";
                 HttpResponseMessage response = await client.PostAsJsonAsync(operation, data);
                 response.EnsureSuccessStatusCode();
                 Console.WriteLine($"Created Haircut for {dyn.DisplayName}.");
-
-                var haircutStarted = fixture.Create<HaircutStarted>();
-                haircutStarted.HaircutId = dyn.HaircutId;
-                haircutStarted.StartedAt = ((DateTime)dyn.CreatedAt).AddMinutes(_minutesFromCreatedToStart);
+                var result = await response.Content.ReadAsStringAsync();
+                var haircutIdWrapper = JsonSerializer.Deserialize<HaircutIdWrapper>(result);
+                var startHaircutCommand = fixture.Create<StartHaircutCommand>();
+                startHaircutCommand.HaircutId = haircutIdWrapper.HaircutId;
+                startHaircutCommand.StartedAt = ((DateTime)dyn.CreatedAt).AddMinutes(_minutesFromCreatedToStart);
                 var milliseconds = (int)TimeSpan.FromMinutes(_minutesFromCreatedToStart).TotalMilliseconds;
-                haircutStarted.HaircutId.DelayedExecute(milliseconds, async (Object source, System.Timers.ElapsedEventArgs e, object input) => await OnTimedEvent(source, e, haircutStarted as Object));
+                startHaircutCommand.HaircutId.DelayedExecute(milliseconds, async (Object source, System.Timers.ElapsedEventArgs e, object input) => await OnTimedEvent(source, e, startHaircutCommand as Object));
 
             }
             else if (DoesPropertyExist(dyn, "StartedAt"))
@@ -81,11 +87,11 @@ namespace Clippers.FlowGenerator
                 HttpResponseMessage response = await client.PostAsJsonAsync(operation, data);
                 response.EnsureSuccessStatusCode();
 
-                var haircutCompleted = fixture.Create<HaircutCompleted>();
-                haircutCompleted.HaircutId = dyn.HaircutId;
-                haircutCompleted.CompletedAt = ((DateTime)dyn.StartedAt).AddMinutes(_minutesFromStartedToCompleted);
+                var completeHaircutCommand = fixture.Create<CompleteHaircutCommand>();
+                completeHaircutCommand.HaircutId = dyn.HaircutId;
+                completeHaircutCommand.CompletedAt = ((DateTime)dyn.StartedAt).AddMinutes(_minutesFromStartedToCompleted);
                 var milliseconds = (int)TimeSpan.FromMinutes(_minutesFromStartedToCompleted).TotalMilliseconds;
-                haircutCompleted.HaircutId.DelayedExecute(milliseconds, async (Object source, System.Timers.ElapsedEventArgs e, object input) => await OnTimedEvent(source, e, haircutCompleted as Object));
+                completeHaircutCommand.HaircutId.DelayedExecute(milliseconds, async (Object source, System.Timers.ElapsedEventArgs e, object input) => await OnTimedEvent(source, e, completeHaircutCommand as Object));
             }
             else if (DoesPropertyExist(dyn, "CompletedAt"))
             {
