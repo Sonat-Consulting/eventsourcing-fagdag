@@ -15,6 +15,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+        builder.AllowAnyHeader();
+        builder.AllowAnyMethod();
+    });
+});
+
 //*************** This is injected for CDE Version (CosmosDB)**************
 builder.Services.AddSingleton(new CosmosClient("https://localhost:8081",
                     "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
@@ -49,6 +60,8 @@ builder.Services.AddScoped<IHaircutRepository, HaircutRepository>();
 builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
 var app = builder.Build();
+
+app.UseCors();
 
 var subscriber = app.Services.GetService<ISubscriber>();
 subscriber?.RegisterProjection(new NumOfHaircutsCreatedProjection());

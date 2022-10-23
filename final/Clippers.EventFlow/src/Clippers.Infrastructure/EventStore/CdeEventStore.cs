@@ -14,7 +14,7 @@ namespace Clippers.Infrastructure.EventStore
         private readonly string _eventsContainerName = "events";
         private readonly string _databaseName = "eventsdb";
         private readonly string _viewsContainerName = "views";
-        private readonly string _leasesContainerName = "projectionleases";
+        private readonly string _leasesContainerName = "leases";
 
 
         public CdeEventStore(string endpointUri, string authKey, string database,
@@ -98,7 +98,15 @@ namespace Clippers.Infrastructure.EventStore
 
         private void CreateDbAndContainersIfNotExists()
         {
-            var db = _client.CreateDatabaseIfNotExistsAsync(new Database { Id = _databaseName }).Result;
+            try
+            {
+                var db = _client.CreateDatabaseIfNotExistsAsync(new Database { Id = _databaseName }).Result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Have you started the Cosmos Db yet?", ex);
+            }
+
 
             PartitionKeyDefinition pkDefnEvents = new PartitionKeyDefinition() { Paths = new Collection<string>() { "/stream/id" } };
             _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_databaseName),
