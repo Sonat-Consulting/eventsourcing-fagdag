@@ -3,13 +3,11 @@ using Clippers.EventFlow.Projections.Infrastructure.Cosmos;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = new ServiceCollection()
-    .AddSingleton(new CosmosDBProjectionEngine("https://localhost:8081",
-                       "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-                        "eventsdb"))
-        .AddLogging()
-    .BuildServiceProvider();
-
-var projectionEngine = builder.GetService<CosmosDBProjectionEngine>();
+    .AddSingleton<ICosmosDBProjectionEngine, CosmosDBProjectionEngine>()
+    .AddLogging()
+    .BuildServiceProvider()
+    ;
+var projectionEngine = builder.GetService<ICosmosDBProjectionEngine>();
 
 if (projectionEngine is null)
 {

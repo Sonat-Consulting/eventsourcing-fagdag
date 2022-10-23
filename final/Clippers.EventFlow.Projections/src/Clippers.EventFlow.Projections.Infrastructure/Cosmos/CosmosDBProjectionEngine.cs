@@ -1,9 +1,13 @@
 ﻿using Clippers.EventFlow.Projections.Core.Interfaces;
+using Clippers.EventFlow.Projections.Infrastructure.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Azure.Documents.ChangeFeedProcessor;
 using Microsoft.Azure.Documents.ChangeFeedProcessor.PartitionManagement;
+using Microsoft.Extensions.Options;
+
 namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
 {
-    public class CosmosDBProjectionEngine
+    public class CosmosDBProjectionEngine : ICosmosDBProjectionEngine
     {
         private readonly string _endpointUri;
         private readonly string _authKey;
@@ -12,19 +16,21 @@ namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
         private readonly string _leaseContainer;
         private readonly string _viewContainer;
         private readonly List<IProjection> _projections;
+        private IHubContext<NotificationHub> _notificationHub;
 
         private IChangeFeedProcessor _changeFeedProcessor;
 
-        public CosmosDBProjectionEngine(string endpointUri, string authKey, string database,
-            string eventContainer = "events", string leaseContainer = "projectionleases", string viewContainer = "views")
+        public CosmosDBProjectionEngine(IOptions<CosmosDbProjectionEngineConfig> config, IHubContext<NotificationHub> notificationHub)
+
         {
-            _authKey = authKey;
-            _endpointUri = endpointUri;
-            _database = database;
-            _eventContainer = eventContainer;
-            _leaseContainer = leaseContainer;
-            _viewContainer = viewContainer;
+            _authKey = config.Value.AuthKey;
+            _endpointUri = config.Value.EndpointUri;
+            _database = config.Value.Database;
+            _eventContainer = config.Value.EventContainer;
+            _leaseContainer = config.Value.LeaseContainer;
+            _viewContainer = config.Value.ViewContainer;
             _projections = new List<IProjection>();
+            _notificationHub = notificationHub;
         }
 
         public void RegisterProjection(IProjection projection)
@@ -57,7 +63,7 @@ namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
                 .WithHostName("Projections")
                 .WithFeedCollection(feedCollectionInfo)
                 .WithLeaseCollection(leaseCollectionInfo)
-                .WithObserverFactory(new EventObserverFactory(_projections, viewRepository))
+                .WithObserverFactory(new EventObserverFactory(_projections, viewRepository, _notificationHub))
                 .WithProcessorOptions(new ChangeFeedProcessorOptions
                 {
                     StartFromBeginning = true

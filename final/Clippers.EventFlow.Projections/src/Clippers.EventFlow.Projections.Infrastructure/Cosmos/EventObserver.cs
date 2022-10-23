@@ -1,21 +1,28 @@
 ﻿using Clippers.EventFlow.Projections.Core.Interfaces;
+using Clippers.EventFlow.Projections.Infrastructure.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.ChangeFeedProcessor.FeedProcessing;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
 {
-    public class EventObserver : IChangeFeedObserver
+    public class EventObserver :IChangeFeedObserver
     {
         private readonly List<IProjection> _projections;
         private readonly IViewRepository _viewRepository;
+        private readonly ILogger _logger;
+        private IHubContext<NotificationHub> _notificationHub;
 
-        public EventObserver(List<IProjection> projections, IViewRepository viewRepostory)
+        public EventObserver(List<IProjection> projections, IViewRepository viewRepostory, ILogger<EventObserver> logger, IHubContext<NotificationHub> notificationHub)
         {
             _projections = projections;
             _viewRepository = viewRepostory;
+            _logger = logger;
+            _notificationHub = notificationHub;
         }
-
+       
         public Task OpenAsync(IChangeFeedObserverContext context)
         {
             return Task.CompletedTask;
@@ -56,6 +63,14 @@ namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
                             view.UpdateCheckpoint(context.PartitionKeyRangeId, document);
 
                             handled = await _viewRepository.SaveViewAsync(viewName, view);
+                            try
+                            {
+                                await _notificationHub.Clients.All.SendAsync("SendNotification", viewName);
+                            }
+                            catch(Exception ex)
+                            {
+                                _logger.LogError("Failed SignalR send.", ex);
+                            }
                         }
                         else
                         {
