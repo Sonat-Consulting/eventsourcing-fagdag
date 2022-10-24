@@ -1,6 +1,5 @@
 using AutoFixture;
 using Clippers.Core.EventStore;
-using Clippers.Core.Haircut.Events;
 using Clippers.Core.Haircut.Models;
 using Clippers.Core.Haircut.Repository;
 using Clippers.Core.Haircut.Services;
@@ -30,70 +29,9 @@ namespace Clippers.Test.Integration
                         "eventsdb")
                 )
                 .AddScoped<IHaircutRepository, HaircutRepository>()
-                .AddScoped<ICreateHaircutService, CreateHaircutService>()
+                //.AddScoped<ICreateHaircutService, CreateHaircutService>()
                 .BuildServiceProvider();
         }
-
-        [TestMethod]
-        public async Task AppendToStreamAsync_AddEvent_IsStored()
-        {
-            var eventstore = _serviceProvider.GetService<IEventStore>();
-            var haircutId = Guid.NewGuid().ToString();
-
-            var haircutCreated = new HaircutCreated
-            {
-                HaircutId = haircutId,
-                CustomerId = Guid.NewGuid().ToString(),
-                DisplayName = "Jan Thomas",
-                CreatedAt = DateTime.Now
-            };
-
-            var events = new List<IEvent>
-            {
-                haircutCreated,
-            };
-
-            var streamId = $"haircut:{haircutId}";
-
-            _ = await eventstore?.AppendToStreamAsync(streamId, 0, events);
-
-            var haircutStarted = new HaircutStarted
-            {
-                HaircutId = haircutCreated.HaircutId,
-                HairdresserId = Guid.NewGuid().ToString(),
-                StartedAt = DateTime.Now
-            };
-
-
-            events = new List<IEvent>
-            {
-                haircutStarted,
-            };
-            _ = await eventstore?.AppendToStreamAsync(streamId, 1, events);
-        }
-
-        [TestMethod]
-        public async Task CreateHaircutService_CreateHaircut_Ok()
-        {
-            var sut = _serviceProvider.GetService<ICreateHaircutService>();
-
-            var fixture = new Fixture();
-            var createHaircutCommand = fixture.Create<CreateHaircutCommand>();
-
-            var res = await sut.CreateHaircut(createHaircutCommand);
-
-            res.HaircutId.Should().NotBeNullOrEmpty();
-            res.CreatedAt.Should().Be(createHaircutCommand.CreatedAt);
-            res.CustomerId.Should().Be(createHaircutCommand?.CustomerId);
-            res.DisplayName.Should().Be(createHaircutCommand?.DisplayName);
-            res.HaircutStatus.Should().Be(HaircutStatusType.waiting);
-            res.Version.Should().Be(1);
-            res.Changes.Count.Should().Be(0);
-            res.HairdresserId.Should().BeNull();
-
-
-
-
-        }
+        
     }
 }
