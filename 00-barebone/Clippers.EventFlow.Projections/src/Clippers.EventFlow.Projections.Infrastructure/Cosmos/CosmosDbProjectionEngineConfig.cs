@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
+﻿namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
 {
     public class CosmosDbProjectionEngineConfig
     {

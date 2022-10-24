@@ -25,8 +25,8 @@ namespace Clippers.EventFlow.Projections.Api
                 if (response != null)
                 {
                     var jObject = response.Resource.FirstOrDefault();
-                    if (jObject != null) 
-                    { 
+                    if (jObject != null)
+                    {
                         view.Add("id", jObject.GetValue("id"));
                         view.Add("payload", jObject.GetValue("payload"));
                     }

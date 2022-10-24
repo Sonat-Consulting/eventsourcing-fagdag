@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace Clippers.EventFlow.Projections.Infrastructure.SignalR
 {
@@ -11,9 +10,9 @@ namespace Clippers.EventFlow.Projections.Infrastructure.SignalR
     {
         public async Task SendNotification(string message)
         {
-            await Clients.All.SendAsync("SendNotification",message);
+            await Clients.All.SendAsync("SendNotification", message);
         }
 
-      
+
     }
 }

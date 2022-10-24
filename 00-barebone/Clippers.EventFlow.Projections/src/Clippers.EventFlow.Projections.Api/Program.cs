@@ -1,12 +1,10 @@
 using Clippers.EventFlow.Projections.Api;
-using Clippers.EventFlow.Projections.Core.Projections;
 using Clippers.EventFlow.Projections.Infrastructure.Cosmos;
 using Clippers.EventFlow.Projections.Infrastructure.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Net.Http.Headers;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +69,7 @@ app.MapGet("/projections/{name}", async (string name, [FromServices] IProjection
 {
     var result = await projectionService.GetView(name);
 
-    if(string.IsNullOrEmpty(result) || result == "{}")
+    if (string.IsNullOrEmpty(result) || result == "{}")
     {
         return Results.NotFound();
     }
@@ -90,12 +88,8 @@ if (projectionEngine is null)
 {
     throw new NullReferenceException("projectionEngine is null. Aborting.");
 }
-projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());
-projectionEngine.RegisterProjection(new HaircutStatisticsProjection());
-projectionEngine.RegisterProjection(new QueueProjection());
-projectionEngine.RegisterProjection(new QueueDictStyleProjection());
 
-//System.Console.WriteLine("Starting Cosmos Projections ChangeFeed Processor...");
+//projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());
 await projectionEngine.StartAsync();
 
 app.Run();

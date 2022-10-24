@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
 {
-    public class EventObserver :IChangeFeedObserver
+    public class EventObserver : IChangeFeedObserver
     {
         private readonly List<IProjection> _projections;
         private readonly IViewRepository _viewRepository;
@@ -22,7 +22,7 @@ namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
             _logger = logger;
             _notificationHub = notificationHub;
         }
-       
+
         public Task OpenAsync(IChangeFeedObserverContext context)
         {
             return Task.CompletedTask;
@@ -67,7 +67,7 @@ namespace Clippers.EventFlow.Projections.Infrastructure.Cosmos
                             {
                                 await _notificationHub.Clients.All.SendAsync("SendNotification", viewName);
                             }
-                            catch(Exception ex)
+                            catch (Exception ex)
                             {
                                 _logger.LogError("Failed SignalR send.", ex);
                             }

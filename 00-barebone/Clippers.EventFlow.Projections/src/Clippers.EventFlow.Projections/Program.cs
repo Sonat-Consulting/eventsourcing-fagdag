@@ -1,5 +1,4 @@
-﻿using Clippers.EventFlow.Projections.Core.Projections;
-using Clippers.EventFlow.Projections.Infrastructure.Cosmos;
+﻿using Clippers.EventFlow.Projections.Infrastructure.Cosmos;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = new ServiceCollection()
@@ -13,10 +12,7 @@ if (projectionEngine is null)
 {
     throw new NullReferenceException("projectionEngine is null. Aborting.");
 }
-projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());
-projectionEngine.RegisterProjection(new HaircutStatisticsProjection());
-projectionEngine.RegisterProjection(new QueueProjection());
-projectionEngine.RegisterProjection(new QueueDictStyleProjection());
+//projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());
 
 System.Console.WriteLine("Starting Cosmos Projections ChangeFeed Processor...");
 await projectionEngine.StartAsync();
