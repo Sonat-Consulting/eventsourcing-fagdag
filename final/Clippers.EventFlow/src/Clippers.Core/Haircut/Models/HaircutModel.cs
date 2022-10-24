@@ -52,6 +52,10 @@ namespace Clippers.Core.Haircut.Models
 
         public void Start(string hairdresserId, DateTime startedAt)
         {
+            if(HaircutStatus != HaircutStatusType.waiting)
+            {
+                throw new ArgumentException("You can only start waiting customers.");
+            }
             Apply(new HaircutStarted
             {
                 HaircutId = HaircutId,
@@ -62,6 +66,10 @@ namespace Clippers.Core.Haircut.Models
 
         public void Complete(DateTime completedAt)
         {
+            if (HaircutStatus != HaircutStatusType.serving)
+            {
+                throw new ArgumentException("You can only complete serving customers.");
+            }
             Apply(new HaircutCompleted
             {
                 HaircutId = HaircutId,
@@ -71,6 +79,10 @@ namespace Clippers.Core.Haircut.Models
 
         public void Cancel(DateTime cancelledAt)
         {
+            if (HaircutStatus != HaircutStatusType.waiting)
+            {
+                throw new ArgumentException("You can only cancel haircuts for waiting customers.");
+            }
             Apply(new HaircutCancelled
             {
                 HaircutId = HaircutId,
