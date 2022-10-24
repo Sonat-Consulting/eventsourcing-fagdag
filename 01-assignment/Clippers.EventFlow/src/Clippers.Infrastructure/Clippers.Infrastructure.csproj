@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.CAP" Version="6.2.0" />
+    <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="6.2.0" />
+    <PackageReference Include="DotNetCore.CAP.MongoDB" Version="6.2.0" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="6.2.0" />
+    <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.18.0" />
+    <PackageReference Include="Savorboard.CAP.InMemoryMessageQueue" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clippers.Core\Clippers.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="EventStore\StoredProcedures\spAppendToStream.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
