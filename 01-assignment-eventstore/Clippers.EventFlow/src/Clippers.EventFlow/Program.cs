@@ -1,8 +1,10 @@
 using Clippers.Core.EventStore;
+using Clippers.Core.Haircut.Commands;
 using Clippers.Core.Haircut.Repository;
 using Clippers.Core.Haircut.Services;
 using Clippers.Infrastructure.EventStore;
 using Clippers.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,12 +51,18 @@ builder.Services.AddSingleton<IEventStore>(
 
 builder.Services.AddScoped<IHaircutRepository, HaircutRepository>();
 
+builder.Services.AddScoped<ICreateHaircutService, CreateHaircutService>();
+
 builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
 var app = builder.Build();
 
 app.UseCors();
 
+app.MapPost("/CreateHaircut", async([FromBody] CreateHaircutCommand createHaircutCommand, [FromServices] ICreateHaircutService createHaircutService) =>
+{
+    return await createHaircutService.CreateHaircut(createHaircutCommand);
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
