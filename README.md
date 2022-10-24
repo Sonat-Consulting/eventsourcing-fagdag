@@ -36,7 +36,7 @@ Eventsourcing og Event drevne systemer har noen styrker og egenskaper som gjør 
 - Programmerere flest kan det ikke og skjønner det ikke. Det er en lærekurve, og det tar tid å tenke om det man er vant med. Så kompetanse og forståelse er en av de største ulempene etter mitt syn.
 - Det må jobbes en stund med grunnmur før man kan bygge huset. Det er en mer komplisert og diffus kodebase å forholde seg til når man bygger. Så hvis ikke man har peiling og skal slenge opp en rask POC, så kan svetteringene under armene bli store.
 - Evensourcing har utfordringer hvis det er hyppige og store omveltninger i den grunnleggende event/forretningsstrukturen.  Så ville ikke valgt dette for diffuse systemer som man ikke helt vet hva retning kommer til å gå i.  Husk at alle eventer må kunne spilles av siden tidenes morgen. Så et event må versjoneres. Og hvis der kommer breaking changes i nye versjoner, må man finne en måte å gjøre de tidligere versjonene kompatible.  Enten med on the fly data transformeringer eller med en engangs konvertering av f.eks V1 eventene til V2.
-- Det passer normalt ikke til å bygge hele virksomheten inn i et altomfattende eventsourcing system. Man vil typisk ha HR, CRM, 3. parts systemer og gammel morro å forholde seg til.  Men evensourcing kan fungere strålende i en moderne sysrtemarkitektur med API'er, eventer og denslags. Da kan evensourcing benyttes som en implementasjonsdetalj bak API'er og event busser. De trenger ikke vite noe om eventsourcing for å benytte det.
+- Det passer normalt ikke til å bygge hele virksomheten inn i et altomfattende eventsourcing system. Man vil typisk ha HR, CRM, 3. parts systemer og gammel morro å forholde seg til.  Men evensourcing kan fungere strålende i en moderne sysrtemarkitektur med API'er, eventer og denslags. Da kan evensourcing benyttes som en implementasjonsdetalj for eet delsystem bak API'er og event busser. De trenger ikke vite noe om eventsourcing for å benytte det.
 
 ## Kodeløsning
 I dette repository følger det med kodeeksempel på implementasjon av eventsourcing i C# og .NET.  Der er implementert to forskjellige varianter med to forskjellige løsningspatterns (CDE og Outbox) mot to forskjellige databaseteknologier:  Microsoft Azure Cosmos Db og MongoDB.
@@ -47,17 +47,18 @@ Måten jeg har bygget entiteten(e) på er sterkt inspirert av DDD (Domain Driven
 ### Utviklingsmiljø
 Jeg har laget koden med de verktøy jeg er mest vant med for tiden, så beklager hvis det ikke passer hatten din :).  Og dobbelt beklager for ikke å ha laget Relasjonsdatabase versjon...)
 
-- [Cosmos DB local emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21)
-- [MongoDB](https://www.mongodb.com/try/download/community2)
-- [Visual Studio 2022 Community](https://visualstudio.microsoft.com/vs/) (du kan kanskje klare deg med VS Code, men jeg har brukt VS Studio med sln filer, så antakelig blir det lettere for deg hvis "ikkje du e jækla go" og har stålkontroll)
-- [GitHub Repository](https://github.com/Sonat-Consulting/eventsourcing-fagdag)
+Github repository: [https://github.com/Sonat-Consulting/eventsourcing-fagdag](https://github.com/Sonat-Consulting/eventsourcing-fagdag)
 
 #### For å komme igang:
 
 1. Installer [Cosmos DB local emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=ssl-netstd21)
 2. Installer [.NET 6.0](https://dotnet.microsoft.com/en-us/download)
-3. Ta i bruk din favoritt IDE for C# prosjekter eller last ned [JetBrains Rider](https://www.jetbrains.com/rider/download)
-4. Åpne og kjør prosjektet ``\git\eventsourcing-fagdag\Clippers.FlowGenerator\Clippers.FlowGenerator.sln``
+3. Ta i bruk din favoritt IDE for C# prosjekter eller last ned [JetBrains Rider](https://www.jetbrains.com/rider/download) eller [Visual Studio 2022 Community](https://visualstudio.microsoft.com/vs/).
+4. Cosmos DB local Emulator må kjøre på maskinen din, så start den. Den har en Data Explorer på Url https://localhost:8081/_explorer/index.html
+5. Åpne og kjør prosjektet [Clippers.EventFlow](https://github.com/Sonat-Consulting/eventsourcing-fagdag/blob/main/final/Clippers.EventFlow/src/Clippers.EventFlow.sln). Dette er Eventsourcing løsningen.
+6. For projeksjoner, åpne og kjør prosjektet [Clippers.EventFlow.Projections](https://github.com/Sonat-Consulting/eventsourcing-fagdag/blob/main/final/Clippers.EventFlow.Projections/src/Clippers.EventFlow.Projections.sln).
+7. For GUI, åpne og kjør prosjektet [clippers-svelte-gui](https://github.com/Sonat-Consulting/eventsourcing-fagdag/tree/main/svelte-demo-app) ved å kjøre `npm install` og `npm run dev`.
+8. I tillegg er der et prosjekt (Clippers.FlowGenerator)(https://github.com/Sonat-Consulting/eventsourcing-fagdag/blob/main/Clippers.FlowGenerator/Clippers.FlowGenerator.sln) som simulerer trafikk inn på Eventsourcingen ved å lage, starte og avslutte klipper jevnt og trutt
 
 ## Clippers
 Casen som er brukt i koden, er en fiktiv frisøkjede.
