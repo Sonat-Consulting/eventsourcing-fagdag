@@ -100,7 +100,8 @@
 
 <main>
 	<section>
-	<h1>Clippers</h1>
+		<img src="./../images/AniClippers.gif" alt="background" />
+		<div class="ruler"></div>
 	</section>
 	<section>
 		<input value={displayName}/>
@@ -162,12 +163,14 @@
 	.customer {
         padding: 0 1em 0 0;
 		font-size: 2em;
+		width: 120px;
 	}
 
 	.icon {
     	color: grey;
     	width: 32px;
     	height: 32px;
+		margin: 0 10px 0 0;
 	}
 	.ruler {
 		width: 310px;
@@ -176,7 +179,9 @@
 		margin: 1em 0 1em 0;
 		border-color: #ff3e00;
 	}
-  
+    img {
+		width: 300px;
+	}
 
 	@media (min-width: 640px) {
 		main {
