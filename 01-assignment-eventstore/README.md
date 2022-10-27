@@ -21,7 +21,7 @@ Oppgaven er strukturert slik at det gis minimal info oppe i dagen, og mer detalj
 2. Legg til håndtering av completed haircut slik at man kan kalle `CompleteHaircut` i API, at aggregatet/entiteten `HaircutModel`er oppdatert i henhold til `Completed` og at eventet `HaircutCompleted` er lagret i EventStore.
 3. Krav om følgende ekstra egenskaper på eventet:
     - DateTime `CompletedAt`.
-4. Hendelsen skal gi `status` `completed` i aggregatet/entiteten `HaircutModel`
+4. Hendelsen skal gi `status` `completed` i aggregatet/entiteten `HaircutModel` (mutasjonen)
 
 [Hint 1 (endringer i aggregatet)](./hint01.md)
 
