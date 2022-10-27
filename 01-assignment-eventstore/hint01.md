@@ -1,6 +1,6 @@
 **Oppdatere aggregatet/entiteten HaircutModel:**
 
-Anbefaler å begynne kodingen i HaircutModel først.  Den er "innerst", så hvis du begynner i endepunkter eller service, så kan du bare lage "skall" inntil HaircutModel erimplementert.
+Anbefaler å begynne kodingen i HaircutModel først.  Den er "innerst", så hvis du begynner i endepunkter eller service, så kan du bare lage "skall" inntil HaircutModel er implementert.
 
 Husk at HaircutModel har både data og oppførsel.
 
