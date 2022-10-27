@@ -4,11 +4,14 @@ using Clippers.Core.Haircut.Repository;
 using Clippers.Core.Haircut.Services;
 using Clippers.Infrastructure.EventStore;
 using Clippers.Infrastructure.Repositories;
+using Clippers.Projections;
 using Clippers.Projections.OutboxProjection;
 using Clippers.Projections.Projections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Serialization.HybridRow;
+using MongoDB.Driver;
+using Savorboard.CAP.InMemoryMessageQueue;
 using Swashbuckle.AspNetCore.Annotations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +39,7 @@ builder.Services.AddSingleton<IEventStore>(
         "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
         "eventsdb")
 );
+
 //************** END CDE Injection *****************************************
 
 //*************** This is injected for Outbox Version (MongoDB)  **************
