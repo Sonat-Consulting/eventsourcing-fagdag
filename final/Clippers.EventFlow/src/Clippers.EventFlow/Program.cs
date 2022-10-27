@@ -94,7 +94,7 @@ app.MapPost("/startHaircut", async ([FromBody] StartHaircutCommand startHaircutC
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(ex);
+        return Results.BadRequest(ex.ToString());
     }
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Starts a haircut in the EventStore.", description: "Starts the haircut identified by the HaircutId provided. You can only start a haircut when it is in the waiting status. "))
   .Produces<string>(StatusCodes.Status200OK)
@@ -109,7 +109,7 @@ app.MapPost("/completeHaircut", async ([FromBody] CompleteHaircutCommand complet
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(ex);
+        return Results.BadRequest(ex.ToString());
     }
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Completes a haircut in the EventStore.", description: "Completes the haircut identified by the HaircutId provided.  You can only complete a haircut when it is in the serving status."))
   .Produces<string>(StatusCodes.Status200OK)
@@ -124,7 +124,7 @@ app.MapPost("/cancelHaircut", async ([FromBody] CancelHaircutCommand cancelHairc
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(ex);
+        return Results.BadRequest(ex.ToString());
     }
     
 }).WithMetadata(new SwaggerOperationAttribute(summary: "Cancel a haircut in the EventStore.", description: "Cancel the haircut identified by the HaircutId provided.  You can only cancel a haircut in the waiting status."))
