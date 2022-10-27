@@ -31,6 +31,19 @@ Oppgaven er strukturert slik at det gis minimal info oppe i dagen, og mer detalj
 
 [Hint 4 (det du kommer til å glemme)](./hint04.md)
 
+### Teste
+Du kan starte løsningen, og bruke API i browser til å kjøre kommandoer med "try it out" knappen.
+
+Du kan bruke Postman eller annen API verktøy som alternativ.
+
+Du kan titte i databasen med Data explorer: https://localhost:8081/_explorer/index.html.
+
+Du kan teste med å bruke Svelte GUI som følger med i github katalogen `clippers-svelte-gui`.
+
+For at GUI skal fungere, må `Cippers.EventFlow.Projections`prosjektet også kjøre. Dette ligger ved siden av `Clippers.EventFlow`. Du kan f.eks. åpne det i IDE og starte det der.
+
+for å starte `clippers-svelte-gui` må du stå i `clippers-svelte-gui` katalogen  kjøre `npm install` (kun første gang) og `npm run dev`.
+
 ### Ekstra
 1. Legg også til `CancelHaircut` på samme lest.
     - Krav om følgende ekstra egenskaper på eventet:
