@@ -10,10 +10,10 @@ Oppgaven er strukturert slik at det gis minimal info oppe i dagen, og mer detalj
 ### Oppgaven
 
 1. Åpne løsningen `Clippers.EventFlow.sln` fra katalog `01-assignment-eventstore` i ditt kodeverktøy (typisk Visual Studio eller Rider). 
-2. Legg til håndtering av completed haircut slik at man kan kalle `CompleteHaircut` i API og at eventet `HaircutCompleted` er lagret i EventStore.
+2. Legg til håndtering av completed haircut slik at man kan kalle `CompleteHaircut` i API, at aggregatet/entiteten `HaircutModel`er oppdatert og at eventet `HaircutCompleted` er lagret i EventStore.
 3. Krav om følgende ekstra egenskaper på eventet:
     - DateTime `CompletedAt`.
-4. Completed skal gi status `completed` i aggregatet/entiteten `HaircutModel`
+4. Hendelsen skal gi `status` `completed` i aggregatet/entiteten `HaircutModel`
 
 [Hint 1 (endringer i aggregatet)](./hint01.md)
 [Hint 2 (service)](./hint02.md)
