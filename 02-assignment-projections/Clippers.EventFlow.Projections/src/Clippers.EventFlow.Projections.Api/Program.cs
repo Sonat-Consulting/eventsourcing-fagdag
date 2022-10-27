@@ -1,4 +1,5 @@
 using Clippers.EventFlow.Projections.Api;
+using Clippers.EventFlow.Projections.Core.Projections;
 using Clippers.EventFlow.Projections.Infrastructure.Cosmos;
 using Clippers.EventFlow.Projections.Infrastructure.SignalR;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +90,9 @@ if (projectionEngine is null)
     throw new NullReferenceException("projectionEngine is null. Aborting.");
 }
 
+projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());
+projectionEngine.RegisterProjection(new NumOfHaircutsCancelledProjection());
+projectionEngine.RegisterProjection(new HaircutStatisticsProjection());
 //System.Console.WriteLine("Starting Cosmos Projections ChangeFeed Processor...");
 await projectionEngine.StartAsync();
 
