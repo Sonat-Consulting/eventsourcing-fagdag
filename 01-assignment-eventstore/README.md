@@ -6,7 +6,9 @@ Oppgaven er å legge til og håndtere kommandoen `CompleteHaircut` med tilhøren
 Startpunktet er at `HaircutCreated`og `HaircutStarted` allerede er implementert.  Så du kan titte på dem for inspirasjon.
 
 `HaircutCreated` oppstår når kunden kjøper en klipp.
+
 `HaircutStarted` oppstår når kunden havner i stolen og klippen starter. 
+
 Vi skal da lage `HaircutCompleted` som betyr at klipp er ferdig og frisør klar til nye utfordringer.
 
 Du kan forberede deg ved å bruke debug funksjonen til å steppe gjennom kommandoene `CreateHaircut` og `StartHaircut` hvis du vil ha kontekst for hvordan ting funker.
@@ -22,8 +24,11 @@ Oppgaven er strukturert slik at det gis minimal info oppe i dagen, og mer detalj
 4. Hendelsen skal gi `status` `completed` i aggregatet/entiteten `HaircutModel`
 
 [Hint 1 (endringer i aggregatet)](./hint01.md)
+
 [Hint 2 (service)](./hint02.md)
+
 [Hint 3 (endepunkt)](./hint03.md)
+
 [Hint 4 (det du kommer til å glemme)](./hint04.md)
 
 ### Ekstra
