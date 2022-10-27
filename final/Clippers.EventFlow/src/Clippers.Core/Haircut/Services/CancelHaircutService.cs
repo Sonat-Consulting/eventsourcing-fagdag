@@ -12,7 +12,7 @@ namespace Clippers.Core.Haircut.Services
         public async Task<HaircutModel> CancelHaircut(CancelHaircutCommand cancelHaircutCommand)
         {
             var haircut = await LoadHaircut(cancelHaircutCommand.HaircutId);
-            haircut.Complete(cancelHaircutCommand.CancelledAt);
+            haircut.Cancel(cancelHaircutCommand.CancelledAt);
             return await base.SaveHaircut(haircut);
         }
     }
