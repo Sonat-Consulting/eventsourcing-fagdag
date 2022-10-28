@@ -91,6 +91,8 @@ if (projectionEngine is null)
 }
 
 projectionEngine.RegisterProjection(new NumOfHaircutsCreatedProjection());
+projectionEngine.RegisterProjection(new NumOfHaircutsStartedProjection());
+projectionEngine.RegisterProjection(new HaircutStatisticsProjection());
 //System.Console.WriteLine("Starting Cosmos Projections ChangeFeed Processor...");
 await projectionEngine.StartAsync();
 
