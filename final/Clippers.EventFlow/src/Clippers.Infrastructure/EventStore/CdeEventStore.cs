@@ -126,7 +126,7 @@ namespace Clippers.Infrastructure.EventStore
 
         private void CreateSpIfNotExists()
         {
-            var spBody = File.ReadAllText(@"..\Clippers.Infrastructure\EventStore\StoredProcedures\spAppendToStream.js");
+            var spBody = File.ReadAllText(@"../Clippers.Infrastructure/EventStore/StoredProcedures/spAppendToStream.js");
 
             var spId = "spAppendToStream";
             var spDefinition = new StoredProcedure
