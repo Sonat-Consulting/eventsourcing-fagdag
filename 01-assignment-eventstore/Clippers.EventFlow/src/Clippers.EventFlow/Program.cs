@@ -1,11 +1,13 @@
 using Clippers.Core.EventStore;
 using Clippers.Core.Haircut.Commands;
+using Clippers.Core.Haircut.Events;
 using Clippers.Core.Haircut.Repository;
 using Clippers.Core.Haircut.Services;
 using Clippers.Infrastructure.EventStore;
 using Clippers.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
+using Swashbuckle.AspNetCore.Annotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +54,7 @@ builder.Services.AddSingleton<IEventStore>(
 builder.Services.AddScoped<IHaircutRepository, HaircutRepository>();
 
 builder.Services.AddScoped<ICreateHaircutService, CreateHaircutService>();
+builder.Services.AddScoped<IStartHaircutService, StartHaircutService>();
 
 builder.Services.AddSwaggerGen(opts => opts.EnableAnnotations());
 
@@ -63,6 +66,22 @@ app.MapPost("/CreateHaircut", async([FromBody] CreateHaircutCommand createHaircu
 {
     return await createHaircutService.CreateHaircut(createHaircutCommand);
 });
+
+app.MapPost("/startHaircut", async ([FromBody] StartHaircutCommand startHaircutCommand, [FromServices] IStartHaircutService startHaircutService) =>
+{
+    try
+    {
+        var ret = await startHaircutService.StartHaircut(startHaircutCommand);
+        return Results.Ok(ret);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.ToString());
+    }
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Starts a haircut in the EventStore.", description: "Starts the haircut identified by the HaircutId provided. You can only start a haircut when it is in the waiting status. "))
+  .Produces<string>(StatusCodes.Status200OK)
+  .Produces(StatusCodes.Status400BadRequest);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
