@@ -19,7 +19,7 @@ Projeksjonen blir derfor en liste med elementer som hver har de 3 properties ove
 
 [Hint 2 - When metodene](./Hint02.md)
 
-[Hint 3 - Det du kommer til å glemme](Hint03.md)
+[Hint 3 - Det du kommer til å glemme](./Hint03.md)
 ### Teste
 Når du er ferdig, kan du starte både `Clippers.EventFlow` prosjektet og `Clippers.Projections` prosjektene.
 
